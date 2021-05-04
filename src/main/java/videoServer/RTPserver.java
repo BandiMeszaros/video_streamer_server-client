@@ -29,7 +29,6 @@ public class RTPserver {
                 ":sout-keep"
         );
 
-        // Don't exit
         Thread.currentThread().join();
     }
 
