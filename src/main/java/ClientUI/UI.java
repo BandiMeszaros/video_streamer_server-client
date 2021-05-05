@@ -45,11 +45,12 @@ public class UI {
         play_pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mediaPlayerComponent.mediaPlayer().controls().pause();
                 if (play_pauseButton.getText().equals("Pause")){
                     play_pauseButton.setText("Play");
+                    mediaPlayerComponent.mediaPlayer().controls().setPause(true);
                 }
-                else{ play_pauseButton.setText("Pause");}
+                else{ play_pauseButton.setText("Pause");
+                    mediaPlayerComponent.mediaPlayer().controls().setPause(false);}
             }
         });
 
