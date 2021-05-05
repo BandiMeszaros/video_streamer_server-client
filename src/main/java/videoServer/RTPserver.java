@@ -2,9 +2,12 @@ package videoServer;
 
 
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
+import uk.co.caprica.vlcj.media.MediaRef;
+import uk.co.caprica.vlcj.media.TrackType;
 import uk.co.caprica.vlcj.player.base.EventApi;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
+import uk.co.caprica.vlcj.player.base.MediaPlayerEventListener;
 import uk.co.caprica.vlcj.player.list.MediaListPlayerEventListener;
 
 public class RTPserver {
@@ -25,6 +28,13 @@ public class RTPserver {
     }
 
     private RTPserver() {
+        mediaPlayer.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter()
+        {
+            @Override
+            public void finished(MediaPlayer mediaPlayer) {
+                //todo: continue from here
+            }
+        });
         System.out.println("RTP server instance has been created....");
     }
 
