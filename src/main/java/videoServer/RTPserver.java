@@ -12,12 +12,10 @@ import uk.co.caprica.vlcj.player.list.MediaListPlayerEventListener;
 
 public class RTPserver {
 
-    private static final RTPserver rtp_serverObject = new RTPserver();
     private static String mediaRoot;
-
-    private static final String options = formatRtpStream("127.0.0.1", 5555);
-    private static final MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
-    private static final MediaPlayer mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
+    private final  String options;
+    private final  MediaPlayerFactory mediaPlayerFactory;
+    private  final MediaPlayer mediaPlayer;
 
     public static String getMediaRoot() {
         return mediaRoot;
@@ -27,28 +25,28 @@ public class RTPserver {
         RTPserver.mediaRoot = mediaRoot;
     }
 
-    private RTPserver() {
+    RTPserver() {
+        options = formatRtpStream("127.0.0.1", 5555);
+        mediaPlayerFactory = new MediaPlayerFactory();
+        mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
+
         mediaPlayer.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter()
         {
             @Override
             public void finished(MediaPlayer mediaPlayer) {
-                //todo: continue from here
+                System.out.println("Media is over....");
+                mediaPlayer.release();
             }
         });
         System.out.println("RTP server instance has been created....");
     }
 
-    public static RTPserver getRTPServer()
-    {
-        return rtp_serverObject;
-    }
-
-    public static void StreamMedia() {
+    public void StreamMedia() {
         mediaPlayer.media().play(mediaRoot, options, ":no-sout-rtp-sap",
                 ":no-sout-standard-sap", ":sout-all", ":sout-keep");
         System.out.println("Streaming '" + mediaRoot + "' to '" + options + "'");
     }
-    public static void StopAndReleaseMedia(){
+    public void StopAndReleaseMedia(){
         System.out.printf("Stopping stream: %s ", mediaRoot);
         mediaPlayer.release();
     }
