@@ -1,33 +1,37 @@
-package videoServer;
+package videoServer.streamApi;
 
 
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
-import uk.co.caprica.vlcj.media.MediaRef;
-import uk.co.caprica.vlcj.media.TrackType;
-import uk.co.caprica.vlcj.player.base.EventApi;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
-import uk.co.caprica.vlcj.player.base.MediaPlayerEventListener;
-import uk.co.caprica.vlcj.player.list.MediaListPlayerEventListener;
 
 public class RTPserver {
 
-    private static String mediaRoot;
+
+    private static final RTPserver rtpServer_object = new RTPserver();
+
+
+    public String mediaRoot;
     private final  String options;
-    private final  MediaPlayerFactory mediaPlayerFactory;
     private  final MediaPlayer mediaPlayer;
 
-    public static String getMediaRoot() {
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
+
+    public String getMediaRoot() {
         return mediaRoot;
     }
 
-    public static void setMediaRoot(String mediaRoot) {
-        RTPserver.mediaRoot = mediaRoot;
+    public void setMediaRoot(String mediaRoot) {
+        this.mediaRoot = mediaRoot;
+        mediaPlayer.media().startPaused(mediaRoot);
     }
 
-    RTPserver() {
+    private RTPserver() {
         options = formatRtpStream("127.0.0.1", 5555);
-        mediaPlayerFactory = new MediaPlayerFactory();
+        MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
         mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
 
         mediaPlayer.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter()
@@ -44,15 +48,17 @@ public class RTPserver {
     public void StreamMedia() {
         mediaPlayer.media().play(mediaRoot, options, ":no-sout-rtp-sap",
                 ":no-sout-standard-sap", ":sout-all", ":sout-keep");
-        System.out.println("Streaming '" + mediaRoot + "' to '" + options + "'");
+        System.out.println("\nStreaming '" + mediaRoot + "' to '" + options + "'");
     }
+
     public void StopAndReleaseMedia(){
         System.out.printf("Stopping stream: %s ", mediaRoot);
         mediaPlayer.release();
     }
 
-
-
+    public static RTPserver getRtpServer_object() {
+        return rtpServer_object;
+    }
     /*public static void main(String[] args) throws Exception {
         if(args.length != 1) {
             System.out.println("Specify a single MRL to stream");

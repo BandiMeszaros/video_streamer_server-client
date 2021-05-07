@@ -1,4 +1,4 @@
-package videoServer;
+package videoServer.streamApi;
 
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
@@ -7,19 +7,18 @@ import uk.co.caprica.vlcj.player.base.State;
 public class videoMetaData {
 
     private final String mediaRoot;
-    private final MediaPlayerFactory mediaPlayerFactory;
-    private final MediaPlayer mediaPlayer;
     private State videoState;
     private final long videoLength_ms;
     private final int videoLength_s;
+    private final RTPserver server;
 
 
-    public videoMetaData(String mediaRoot) {
-        this.mediaRoot = mediaRoot;
-        mediaPlayerFactory = new MediaPlayerFactory();
-        mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
-        videoState = mediaPlayer.media().info().state();
-        videoLength_ms = mediaPlayer.media().info().duration();
+    public videoMetaData(RTPserver server) {
+        this.server = server;
+        this.mediaRoot = server.getMediaRoot();
+
+        videoState = server.getMediaPlayer().media().info().state();
+        videoLength_ms = server.getMediaPlayer().media().info().duration();
         videoLength_s = (int)videoLength_ms/1000;
 
     }
@@ -37,6 +36,7 @@ public class videoMetaData {
     }
 
     public State getVideoState() {
+        videoState = server.getMediaPlayer().media().info().state();
         return videoState;
     }
 
