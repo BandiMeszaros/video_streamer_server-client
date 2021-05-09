@@ -11,6 +11,8 @@ import java.net.InetSocketAddress;
 public class RequestInterface {
 
     private final HttpServer server;
+    private final ServerHttpHandler handler;
+
 
     public RequestInterface() {
         HttpServer server1;
@@ -22,9 +24,10 @@ public class RequestInterface {
         }
 
         server = server1;
-        server.createContext("/test", new ServerHttpHandler());
-        server.createContext("/listvideos", new ServerHttpHandler());
-        server.createContext("/video", new ServerHttpHandler());
+        handler = new ServerHttpHandler();
+        server.createContext("/test", handler);
+        server.createContext("/listvideos", handler);
+        server.createContext("/video", handler);
         //add here new endpoints
 
         }
@@ -37,6 +40,7 @@ public class RequestInterface {
 
         public void ServerStop()
         {
+            handler.getDbAPI().close_connection();
             server.stop(10);
         }
 

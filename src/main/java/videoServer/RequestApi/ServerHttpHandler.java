@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpHandler;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import videoServer.db.SQL_handler;
+import videoServer.streamApi.streamData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +17,12 @@ import java.net.URI;
 public class ServerHttpHandler implements HttpHandler {
 
     private HttpExchange exchange;
+    private final SQL_handler dbAPI = new SQL_handler();
+
+
+    public SQL_handler getDbAPI() {
+        return dbAPI;
+    }
 
     private void ErrorResponseSender(String ErrorMessage, int eCode)
     {
@@ -66,9 +74,7 @@ public class ServerHttpHandler implements HttpHandler {
             try {
                 bodyJson = (JSONObject)jsonParser.parse(
                         new InputStreamReader(body, "UTF-8"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
 
@@ -77,6 +83,12 @@ public class ServerHttpHandler implements HttpHandler {
                 if (bodyJson.get("videoId") instanceof Long)
                 {
                     videoId = ((Long) bodyJson.get("videoId")).intValue();
+                    String db_response = dbAPI.selectedVideo(videoId);
+                    if (db_response.equals("")){
+                        String message = "The videoId: "+videoId+" doesn't exist";
+                        ErrorResponseSender(message, 404);
+                }
+
                     // todo: run query and start stream
                     //todo handle wrong videoID error
                     String response = "Video request was recieved with ID videoId: "+videoId;
