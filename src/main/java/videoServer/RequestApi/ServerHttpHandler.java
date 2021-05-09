@@ -14,10 +14,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
 
+
 public class ServerHttpHandler implements HttpHandler {
 
     private HttpExchange exchange;
     private final SQL_handler dbAPI = new SQL_handler();
+    private Thread executor;
 
 
     public SQL_handler getDbAPI() {
@@ -88,11 +90,27 @@ public class ServerHttpHandler implements HttpHandler {
                         String message = "The videoId: "+videoId+" doesn't exist";
                         ErrorResponseSender(message, 404);
                 }
+                    else{
 
-                    // todo: run query and start stream
-                    //todo handle wrong videoID error
-                    String response = "Video request was recieved with ID videoId: "+videoId;
-                    responseSender(response);
+                        //this is where i'm stuck
+                        System.out.println("this is the video that will be streamed: " +db_response);
+                        streamData stream = new streamData(db_response);
+                        //streamData stream = new streamData("videos\\cica.mp4");
+                        //int duration = stream.getMediaInfo().getVideoLength_s();
+                        //long duration_ms = stream.getMediaInfo().getVideoLength_ms();
+//                        System.out.printf("Length of video: %dseconds\n", duration);
+                        if (executor!=null && executor.isAlive())
+                        {
+                            executor.interrupt();
+                        }
+                        executor = stream.getRtpStreamThread();
+                        System.out.println("started video streaming....");
+                        executor.setDaemon(true);
+                        executor.start();
+
+                        responseSender("Stream started....");
+                        System.out.println("started streaming....");
+                    }
                 }
                 else{
                     ErrorResponseSender("wrong videoID format in body", 400);
@@ -102,6 +120,9 @@ public class ServerHttpHandler implements HttpHandler {
                 ErrorResponseSender("Body doesn't exist, wrong request", 400);
             }
 
+        }
+        else{
+            ErrorResponseSender("Wrong endpoint", 404);
         }
     }
 
@@ -113,8 +134,9 @@ public class ServerHttpHandler implements HttpHandler {
             responseSender(responseMessage);
 
         } else if ("listvideos".equals(endpoint)) {
-            String responseMessage = "List of videos:";
-            responseSender(responseMessage);
+            String responseMessage = "List of videos\n";
+            String db_query = dbAPI.listAllVideos();
+            responseSender(responseMessage+db_query);
         }
         //create extra endpoints here
         else{

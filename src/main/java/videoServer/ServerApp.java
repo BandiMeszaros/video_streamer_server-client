@@ -10,13 +10,13 @@ public class ServerApp {
     public static requestEntryPoint httpInterface;
 
     public static void main(String[] args) throws InterruptedException {
-        //stream = new streamData("C:\\Users\\Andras Meszaros\\Documents\\BME\\java_tech\\hazi\\VideoStreaming\\videos\\sampl.mp4");
-        //int duration = stream.getMediaInfo().getVideoLength_s();
-        //long duration_ms = stream.getMediaInfo().getVideoLength_ms();
-        //System.out.printf("Length of video: %dseconds\n", duration);
-        //Thread rtp_stream = stream.getRtpStreamThread();
-        //System.out.println("started video streaming....");
-        //rtp_stream.start();
+//        stream = new streamData("C:\\Users\\Andras Meszaros\\Documents\\BME\\java_tech\\hazi\\VideoStreaming\\videos\\cica.mp4");
+//        int duration = stream.getMediaInfo().getVideoLength_s();
+//        long duration_ms = stream.getMediaInfo().getVideoLength_ms();
+//        System.out.printf("Length of video: %dseconds\n", duration);
+//        Thread rtp_stream = stream.getRtpStreamThread();
+//        System.out.println("started video streaming....");
+//        rtp_stream.start();
         httpInterface = new requestEntryPoint();
         httpInterface.start();
 
