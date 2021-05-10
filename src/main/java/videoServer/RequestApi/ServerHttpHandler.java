@@ -94,7 +94,6 @@ public class ServerHttpHandler implements HttpHandler {
 
                         //this is where i'm stuck
                         System.out.println("this is the video that will be streamed: " +db_response);
-                        streamData stream = new streamData(db_response);
                         //streamData stream = new streamData("videos\\cica.mp4");
                         //int duration = stream.getMediaInfo().getVideoLength_s();
                         //long duration_ms = stream.getMediaInfo().getVideoLength_ms();
@@ -103,6 +102,7 @@ public class ServerHttpHandler implements HttpHandler {
                         {
                             executor.interrupt();
                         }
+                        streamData stream = new streamData(db_response);
                         executor = stream.getRtpStreamThread();
                         System.out.println("started video streaming....");
                         executor.setDaemon(true);

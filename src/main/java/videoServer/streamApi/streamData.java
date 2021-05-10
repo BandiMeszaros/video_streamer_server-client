@@ -1,6 +1,8 @@
 package videoServer.streamApi;
 
 
+import uk.co.caprica.vlcj.player.base.State;
+
 class streamVideoError extends Exception
 {
     public streamVideoError(String message) {
@@ -69,6 +71,10 @@ public class streamData {
                         server.StopAndReleaseMedia();
                         Thread.currentThread().interrupt();
                     }
+                }
+                if (streamState == uk.co.caprica.vlcj.player.base.State.ENDED)
+                {
+                    server.setStreamSet(false);
                 }
 
             }

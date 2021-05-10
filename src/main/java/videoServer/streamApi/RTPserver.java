@@ -13,7 +13,8 @@ public class RTPserver {
 
     public String mediaRoot;
     private final  String options;
-    private  final MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
+    private boolean streamRootSet = false;
 
 
     public MediaPlayer getMediaPlayer() {
@@ -25,8 +26,16 @@ public class RTPserver {
     }
 
     public void setMediaRoot(String mediaRoot) {
+
+        if (streamRootSet) {
+            StopAndReleaseMedia();
+            MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
+            mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
+        }
         this.mediaRoot = mediaRoot;
+
         mediaPlayer.media().startPaused(mediaRoot);
+        streamRootSet = true;
     }
 
     private RTPserver() {
@@ -54,6 +63,10 @@ public class RTPserver {
     public void StopAndReleaseMedia(){
         System.out.printf("Stopping stream: %s ", mediaRoot);
         mediaPlayer.release();
+    }
+    public void setStreamSet(boolean v)
+    {
+        streamRootSet = v;
     }
 
     public static RTPserver getRtpServer_object() {
