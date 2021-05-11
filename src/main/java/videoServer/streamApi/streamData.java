@@ -1,8 +1,6 @@
 package videoServer.streamApi;
 
 
-import uk.co.caprica.vlcj.player.base.State;
-
 class streamVideoError extends Exception
 {
     public streamVideoError(String message) {

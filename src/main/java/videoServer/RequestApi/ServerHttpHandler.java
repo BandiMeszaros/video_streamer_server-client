@@ -92,12 +92,8 @@ public class ServerHttpHandler implements HttpHandler {
                 }
                     else{
 
-                        //this is where i'm stuck
                         System.out.println("this is the video that will be streamed: " +db_response);
-                        //streamData stream = new streamData("videos\\cica.mp4");
-                        //int duration = stream.getMediaInfo().getVideoLength_s();
-                        //long duration_ms = stream.getMediaInfo().getVideoLength_ms();
-//                        System.out.printf("Length of video: %dseconds\n", duration);
+
                         if (executor!=null && executor.isAlive())
                         {
                             executor.interrupt();
