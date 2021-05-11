@@ -10,7 +10,7 @@ class streamVideoError extends Exception
 
 
 public class streamData {
-    final RTPserver server = RTPserver.getRtpServer_object();
+    final RTPserver server = new RTPserver();
     final RTP_thread RtpStreamThread;
     final videoMetaData mediaInfo;
 

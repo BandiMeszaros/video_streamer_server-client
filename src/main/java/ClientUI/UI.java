@@ -17,17 +17,16 @@ public class UI {
     private final String VideoRoot;
     private final JButton play_pauseButton;
 
-    public UI(String videoroot) {
-        VideoRoot = videoroot;
+    public UI() {
+        VideoRoot = "rtp://@127.0.0.1:5555";
         frame = new JFrame("MediaPlayer");
         frame.setBounds(100,100,600,400);
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 mediaPlayerComponent.release();
-                System.exit(0);
             }
         });
 
@@ -62,7 +61,7 @@ public class UI {
 
 
     public static void main(String[] args) {
-        final UI a = new UI(args[0]);
+        final UI a = new UI();
     }
 
 }

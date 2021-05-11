@@ -8,7 +8,7 @@ import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 public class RTPserver {
 
 
-    private static final RTPserver rtpServer_object = new RTPserver();
+    private  RTPserver rtpServer_object;
 
 
     public String mediaRoot;
@@ -38,7 +38,7 @@ public class RTPserver {
         streamRootSet = true;
     }
 
-    private RTPserver() {
+    public RTPserver() {
         options = formatRtpStream("127.0.0.1", 5555);
         MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
         mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
@@ -68,11 +68,6 @@ public class RTPserver {
     {
         streamRootSet = v;
     }
-
-    public static RTPserver getRtpServer_object() {
-        return rtpServer_object;
-    }
-
 
     private static String formatRtpStream(String serverAddress, int serverPort) {
         StringBuilder sb = new StringBuilder(60);
