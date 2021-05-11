@@ -92,7 +92,6 @@ public class ServerHttpHandler implements HttpHandler {
                 }
                     else{
 
-
                         System.out.println("this is the video that will be streamed: " +db_response);
 
                         if (executor!=null && executor.isAlive())
