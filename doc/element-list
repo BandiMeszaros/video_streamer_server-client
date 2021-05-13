@@ -1,0 +1,6 @@
+ClientAPP
+ClientUI
+videoServer
+videoServer.db
+videoServer.RequestApi
+videoServer.streamApi
